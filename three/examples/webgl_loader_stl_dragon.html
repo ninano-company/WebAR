@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - STL</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+	</head>
+	<body>
+
+		<script type="module">
+
+			import * as THREE from '../build/three.module.js';
+			import Stats from './jsm/libs/stats.module.js';
+			import { GUI } from './jsm/libs/dat.gui.module.js';
+			import { STLLoader } from './jsm/loaders/STLLoader.js';
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+
+			var container, stats;
+
+			var camera, controls, cameraTarget, scene, renderer;
+
+			init();
+			animate();
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 15 );
+				// camera.position.set( 10, 0.15, 100 );
+
+				cameraTarget = new THREE.Vector3( 0, 0, 0 );
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0x72645b );
+				scene.fog = new THREE.Fog( 0x72645b, 2, 15 );
+
+
+				// Ground
+
+				var plane = new THREE.Mesh(
+					new THREE.PlaneBufferGeometry( 40, 40 ),
+					new THREE.MeshPhongMaterial( { color: 0x999999, specular: 0x101010 } )
+				);
+				plane.rotation.x = - Math.PI / 2;
+				plane.position.y = - 0.5;
+				scene.add( plane );
+
+				plane.receiveShadow = true;
+
+
+				// ASCII file
+
+				var loader = new STLLoader();
+
+				// Binary files
+
+				var material = new THREE.MeshPhongMaterial( { color: 0xAAAAAA, specular: 0x111111, shininess: 200 } );
+
+
+				loader.load( './models/stl/Dragon2.5_stl.stl', function ( geometry ) {
+
+				var mesh = new THREE.Mesh( geometry, material );
+
+				mesh.position.set( 0, -0.5, 0 );
+				mesh.rotation.set( - Math.PI / 2, 0, 0 );
+				mesh.scale.set( 0.02, 0.02, 0.02 );
+
+				mesh.castShadow = true;
+				mesh.receiveShadow = true;
+
+				scene.add( mesh );
+
+				createPanel();
+
+				} );
+
+
+				// Colored binary STL
+
+
+				// Lights
+
+				scene.add( new THREE.HemisphereLight( 0x443333, 0x111122 ) );
+
+				addShadowedLight( 1, 1, 1, 0xffffff, 1.35 );
+				addShadowedLight( 0.5, 1, - 1, 0xffaa00, 1 );
+				// renderer
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.outputEncoding = THREE.sRGBEncoding;
+
+				renderer.shadowMap.enabled = false;
+
+				container.appendChild( renderer.domElement );
+
+				// stats
+
+				stats = new Stats();
+				container.appendChild( stats.dom );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function addShadowedLight( x, y, z, color, intensity ) {
+
+				var directionalLight = new THREE.DirectionalLight( color, intensity );
+				directionalLight.position.set( x, y, z );
+				scene.add( directionalLight );
+
+				directionalLight.castShadow = true;
+
+				var d = 1;
+				directionalLight.shadow.camera.left = - d;
+				directionalLight.shadow.camera.right = d;
+				directionalLight.shadow.camera.top = d;
+				directionalLight.shadow.camera.bottom = - d;
+
+				directionalLight.shadow.camera.near = 1;
+				directionalLight.shadow.camera.far = 4;
+
+				directionalLight.shadow.bias = - 0.002;
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				var timer = 90;
+
+				camera.position.x = Math.cos( timer ) * 3;
+				camera.position.z = Math.sin( timer ) * 3;
+
+				camera.lookAt( cameraTarget );
+
+				renderer.render( scene, camera );
+
+			}
+
+			function createPanel() {
+
+			var panel = new GUI( { width: 310 } );
+
+			var folder1 = panel.addFolder( 'Visibility' );
+			var folder2 = panel.addFolder( 'Activation/Deactivation' );
+			var folder3 = panel.addFolder( 'Pausing/Stepping' );
+			var folder4 = panel.addFolder( 'Crossfading' );
+			var folder5 = panel.addFolder( 'Blend Weights' );
+			var folder6 = panel.addFolder( 'General Speed' );
+
+			settings = {
+				'show model': true,
+				'show skeleton': false,
+				'deactivate all': deactivateAllActions,
+				'activate all': activateAllActions,
+				'pause/continue': pauseContinue,
+				'make single step': toSingleStepMode,
+				'modify step size': 0.05,
+				'from walk to idle': function () {
+
+					prepareCrossFade( walkAction, idleAction, 1.0 );
+
+				},
+				'from idle to walk': function () {
+
+					prepareCrossFade( idleAction, walkAction, 0.5 );
+
+				},
+				'from walk to run': function () {
+
+					prepareCrossFade( walkAction, runAction, 2.5 );
+
+				},
+				'from run to walk': function () {
+
+					prepareCrossFade( runAction, walkAction, 5.0 );
+
+				},
+				'use default duration': true,
+				'set custom duration': 3.5,
+				'modify idle weight': 0.0,
+				'modify walk weight': 1.0,
+				'modify run weight': 0.0,
+				'modify time scale': 1.0
+			};
+
+			folder1.add( settings, 'show model' ).onChange( showModel );
+			folder1.add( settings, 'show skeleton' ).onChange( showSkeleton );
+			folder2.add( settings, 'deactivate all' );
+			folder2.add( settings, 'activate all' );
+			folder3.add( settings, 'pause/continue' );
+			folder3.add( settings, 'make single step' );
+			folder3.add( settings, 'modify step size', 0.01, 0.1, 0.001 );
+			crossFadeControls.push( folder4.add( settings, 'from walk to idle' ) );
+			crossFadeControls.push( folder4.add( settings, 'from idle to walk' ) );
+			crossFadeControls.push( folder4.add( settings, 'from walk to run' ) );
+			crossFadeControls.push( folder4.add( settings, 'from run to walk' ) );
+			folder4.add( settings, 'use default duration' );
+			folder4.add( settings, 'set custom duration', 0, 10, 0.01 );
+			folder5.add( settings, 'modify idle weight', 0.0, 1.0, 0.01 ).listen().onChange( function ( weight ) {
+
+				setWeight( idleAction, weight );
+
+			} );
+			folder5.add( settings, 'modify walk weight', 0.0, 1.0, 0.01 ).listen().onChange( function ( weight ) {
+
+				setWeight( walkAction, weight );
+
+			} );
+			folder5.add( settings, 'modify run weight', 0.0, 1.0, 0.01 ).listen().onChange( function ( weight ) {
+
+				setWeight( runAction, weight );
+
+			} );
+			folder6.add( settings, 'modify time scale', 0.0, 1.5, 0.01 ).onChange( modifyTimeScale );
+
+			folder1.open();
+			folder2.open();
+			folder3.open();
+			folder4.open();
+			folder5.open();
+			folder6.open();
+
+			crossFadeControls.forEach( function ( control ) {
+
+				control.classList1 = control.domElement.parentElement.parentElement.classList;
+				control.classList2 = control.domElement.previousElementSibling.classList;
+
+				control.setDisabled = function () {
+
+					control.classList1.add( 'no-pointer-events' );
+					control.classList2.add( 'control-disabled' );
+
+				};
+
+				control.setEnabled = function () {
+
+					control.classList1.remove( 'no-pointer-events' );
+					control.classList2.remove( 'control-disabled' );
+
+				};
+
+			} );
+
+			}
+
+		</script>
+	</body>
+</html>
