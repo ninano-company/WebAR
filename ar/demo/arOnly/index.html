@@ -1,0 +1,105 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css?ver=0">
+    <!-- include A-Frame obviously -->
+    <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
+    <!-- include ar.js for A-Frame -->
+    <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+    <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+
+</head>
+<body style='margin : 0px; overflow: hidden;'>
+  <div class="wtr"></div>
+  <img src="../lib/effect/glass/imga.png" class="imgPNG imga hidden" alt="imga">
+  <img src="../lib/effect/glass/imgb.png" class="imgPNG imgb hidden" alt="imgb">
+  <img src="../lib/effect/glass/imgc.png" class="imgPNG imgc hidden" alt="imgc">
+  <button class='btn mw-md' onclick="glassStart()">Start</button>
+  <a-scene id="target" vr-mode-ui="enabled:false" embedded arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
+    <!-- create your content here. just a box for now -->
+    <a-assets>
+      <a-asset-item id="bird" response-type="arraybuffer" src="../scene.glb"></a-asset-item>
+      <a-asset-item id="nemo" response-type="arraybuffer" src="../nemo.glb"></a-asset-item>
+      <!-- <a-asset-item id="fox" response-type="arraybuffer" src="../Fox.glb"></a-asset-item> -->
+    </a-assets>
+    <!-- define a camera which will move according to the marker position -->
+    <a-marker preset='kanji'>
+      <!-- <a-entity id="targetFox" gltf-model="#fox" position="0 0 0" scale="0.02 0.02 0.02" rotation="-90 0 0" animation-mixer></a-entity> -->
+    </a-marker>
+    <a-marker preset='hiro'>
+      <!-- <a-entity id="targetBird" gltf-model="#bird" position="0 0 0" scale="0.01 0.01 0.01" rotation="-90 0 0"></a-entity> -->
+      <a-entity id="targetNemo" gltf-model="#nemo" position="0 -1 0" scale="0.005 0.005 0.005" rotation="-90 0 0"></a-entity>
+    </a-marker>
+  </a-scene>
+  <script src="./script.js">
+
+  </script>
+  <script>
+
+
+
+    var el = document.querySelector('#targetNemo');
+    var sts = false;
+    var brkGlass = 0;
+    var aniChk = 0;
+
+    el.setAttribute('visible', false);
+
+    function stAni() {
+      el.setAttribute('visible', true);
+      el.setAttribute('animation-mixer', {clip: "*", loop: "repeat", repetitions: "Infinity"});
+    }
+    
+    function glassStart() {
+      // alert('Hello');
+      if( sts == false ){
+        sts = true;
+        // document.querySelector('button .btn').value = 'Stop';
+      } else {
+        sts = false;
+        brkGlass = 0;
+        document.querySelector('.imga').classList.add('hidden');
+        document.querySelector('.imgb').classList.add('hidden');
+        document.querySelector('.imgc').classList.add('hidden');
+        document.querySelector('.wtr').classList.remove('wtrBlue');
+        el.setAttribute('visible', false);
+        for( var i = 0; i < bubble.length; i++ ) {
+          document.getElementById( 'bubble'+i ).style.display = 'none';
+        }
+        // el.removeEventListener('animation-finished', stAni);
+        // document.querySelector('button .btn').value = 'Start';
+      }
+    }
+    document.querySelector('body').addEventListener('click', function(event){
+      if( sts == true ) {
+        if( brkGlass == 0 ) {
+          brkGlass++;
+        } else if ( brkGlass == 1 ){
+          brkGlass++;
+          document.querySelector('.imga').classList.remove('hidden');
+        } else if ( brkGlass == 2 ){
+          brkGlass++;
+          document.querySelector('.imga').classList.add('hidden');
+          document.querySelector('.imgb').classList.remove('hidden');
+        } else if ( brkGlass == 3 ){
+          brkGlass++;
+          document.querySelector('.imgb').classList.add('hidden');
+          document.querySelector('.imgc').classList.remove('hidden');
+        } else if ( brkGlass == 4 ){
+          brkGlass++;
+          document.querySelector('.imgc').classList.add('hidden');
+          document.querySelector('.wtr').classList.add('wtrBlue');
+          stAni();
+          for( var i = 0; i < bubble.length; i++ ) {
+            document.getElementById( 'bubble'+i ).style.display = 'block';
+          }
+          floating();
+        }
+      }
+    })
+  </script>
+</body>
+</html>

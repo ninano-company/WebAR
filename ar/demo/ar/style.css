@@ -1,0 +1,165 @@
+
+.fontSM {
+    font-size: 0.9em !important;
+}
+.text-center {
+    text-align: center;
+}
+.inner-box {
+    width: 80%;
+    height: 80%;
+}
+
+.a-canvas {
+    z-index: 15;
+}
+
+.cptBtn {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    z-index: 16;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 4px 1px #999;
+}
+.dirBtn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    border: none;
+    outline: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 4px 1px #999;
+    z-index: 16;
+}
+.blcok {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.layer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    opacity: 0;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 14;
+    transition: 1s;
+}
+.drc {
+    flex-direction: row;
+}
+.layOn {
+    background-color: #fff;
+}
+.layOpacity {
+    background-color: rgba(255, 255, 255, 0);
+}
+.jtf-sa {
+    justify-content: space-around;
+}
+
+.btn {
+    width: 80%;
+    align-self: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 0.5em;
+    font-weight: bold;
+    font-size: 1.2em;
+    box-shadow: 1px 1px 4px 1px #999;
+    outline: none;
+}
+.btnR {
+    align-self: top;
+    width: 50px;
+    min-height: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-right: 15px;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 0 4px 1px #999;
+    outline: none;
+}
+.inner-box {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-content: center;
+    border: none;
+    border-radius: 0.5em;
+    box-shadow: 1px 1px 4px 1px #999;
+    outline: none;
+}
+
+.btnInfo {
+    background-color: rgba(202, 202, 202, 0.8);
+}
+.btnCam {
+    background-color: rgba(202, 202, 202, 0.2);
+    border: 2px dashed #555;
+    height: 50%;
+}
+.btnPink {
+    background-color: rgba(222, 199, 199, 0.6);
+}
+.btnCyan {
+    background-color: rgba(195, 222, 219, 0.6);
+}
+.btnYellow {
+    background-color: rgba(240, 241, 178, 0.6);
+}
+
+.imgPNG {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+.hidden {
+    display: none;
+}
+.wtr {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: blue;
+    opacity: 0;
+    transition: 5s;
+}
+
+.wtrBlue {
+    opacity: 0.15;
+}
+
+.mw-md {
+    min-width: 50px;
+}
+
+.bubble1 { display: none; position: absolute; top:0; left:0; background: url(../lib/effect/bubble/bubble2.png) no-repeat center center / cover;}
+.bubble2 { display: none; position: absolute; top:0; left:0; background: url(../lib/effect/bubble/bubble3.png) no-repeat center center / cover;}
+.bubble3 { display: none; position: absolute; top:0; left:0; background: url(../lib/effect/bubble/bubble4.png) no-repeat center center / cover;}
+.bubble4 { display: none; position: absolute; top:0; left:0; background: url(../lib/effect/bubble/bubble5.png) no-repeat center center / cover;}

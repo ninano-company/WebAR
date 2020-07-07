@@ -1,0 +1,57 @@
+canvas {
+    z-index: 15;
+}
+
+.btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    margin: 0;
+    padding: 15px;
+    border: none;
+    z-index: 16;
+}
+
+.imgPNG {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+.imga {
+    z-index: 16;
+}
+.imgb {
+    z-index: 16;
+}
+.imgc {
+    z-index: 16;
+}
+.hidden {
+    display: none;
+}
+.wtr {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: blue;
+    opacity: 0;
+    z-index: 16;
+    transition: 5s;
+}
+
+.wtrBlue {
+    opacity: 0.15;
+}
+
+.mw-md {
+    min-width: 50px;
+}
+
+.bubble1 { display: none; position: absolute; top:0; left:0; background: url(../lib/effect/bubble/bubble2.png) no-repeat center center / cover;}
+.bubble2 { display: none; position: absolute; top:0; left:0; background: url(../lib/effect/bubble/bubble3.png) no-repeat center center / cover;}
+.bubble3 { display: none; position: absolute; top:0; left:0; background: url(../lib/effect/bubble/bubble4.png) no-repeat center center / cover;}
+.bubble4 { display: none; position: absolute; top:0; left:0; background: url(../lib/effect/bubble/bubble5.png) no-repeat center center / cover;}
