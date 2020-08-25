@@ -20,12 +20,14 @@
     <button class="btn btn3 btnCyan">번역 - 飜譯 - Translation</button>
     <button class="btn btn4 btnYellow">지도</button>
   </div>
+
   <div class="layer layOpacity layB">
     <button class="btn btn1 btnInfo">한국어</button>
     <button class="btn btn2 btnInfo">中國語</button>
     <button class="btn btn3 btnInfo">English</button>
     <button class="dirBtn">뒤로</button>
   </div>
+
   <div class="layer layOpacity layC">
     <button class="btn btnInfo fontSM">중앙에 안내판이 보이도록 카메라를 비춰주세요.</button>
     <button class="btn btnCam">안내판을 네모 안에 넣어주세요</button>
@@ -37,6 +39,7 @@
     <button class="btn btn2 btnInfo">방명록 작성하기</button>
     <button class="btn btn3 btnInfo">다시 촬영하기</button>
   </div>
+
   <div class="block layOpacity layE">
     <button class="cptBtn"></button>
     <div class="wtr"></div>
@@ -44,7 +47,9 @@
     <img src="../lib/effect/glass/imgb.png" class="imgPNG imgb hidden" alt="imgb">
     <img src="../lib/effect/glass/imgc.png" class="imgPNG imgc hidden" alt="imgc">
     <button class="dirBtn">뒤로</button>
+    <button class="dirBtn2">액션</button>
   </div>
+
   <!-- <div class="layer drc layOpacity layF">
     <button class="btnR btn1 fontSM">언어변경</button>
     <button class="btnR btn1 fontSM">읽어주기</button>
@@ -54,13 +59,17 @@
   <a-scene id="target" vr-mode-ui="enabled:false" embedded arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
     <!-- create your content here. just a box for now -->
     <a-assets>
-      <a-asset-item id="nemo" response-type="arraybuffer" src="../nemo.glb"></a-asset-item>
+      <a-asset-item id="nemo1" response-type="arraybuffer" src="../nem1.glb"></a-asset-item>
+      <a-asset-item id="nemo2" response-type="arraybuffer" src="../nem2.glb"></a-asset-item>
+      <a-asset-item id="nemo3" response-type="arraybuffer" src="../nem3.glb"></a-asset-item>
     </a-assets>
     <!-- define a camera which will move according to the marker position -->
     <a-marker preset='kanji'>
     </a-marker>
-    <a-marker id="markerNemo" preset='hiro' smooth='true'>
-      <a-entity id="targetNemo" gltf-model="#nemo" position="0 -1 0" scale="0.005 0.005 0.005" rotation="-90 0 0"></a-entity>
+    <a-marker id="markerNemo" preset='hiro' smooth='true' pointer>
+      <a-entity id="targetNemo1" gltf-model="#nemo1" position="0 -1 0" scale="0.005 0.005 0.005" rotation="-90 0 0"></a-entity>
+      <a-entity id="targetNemo2" gltf-model="#nemo2" position="0 -1 0" scale="0.005 0.005 0.005" rotation="-90 0 0"></a-entity>
+      <a-entity id="targetNemo3" gltf-model="#nemo3" position="0 -1 0" scale="0.005 0.005 0.005" rotation="-90 0 0"></a-entity>
     </a-marker>
   </a-scene>
 
@@ -69,21 +78,59 @@
 
   <script src="./script.js"></script>
   <script>
-    var el = document.querySelector('#targetNemo');
+    var el1 = document.querySelector('#targetNemo1');
+    var el2 = document.querySelector('#targetNemo2');
+    var el3 = document.querySelector('#targetNemo3');
+    var marker = document.querySelector('#markerNemo');
     var sGlass = document.querySelector('#glassClank');
     var sBubble = document.querySelector('#deepWaterBubble');
 
     var sts = false;
     var brkGlass = 0;
     var aniChk = 0;
+    var thRd = false;
 
-    el.setAttribute('visible', false);
+    el1.setAttribute('visible', false);
+    el2.setAttribute('visible', false);
+    el3.setAttribute('visible', false);
 
+    marker.setAttribute('emitevents', 'true');
+    document.querySelector('.dirBtn2').addEventListener('click', stAct);
+
+    el1.addEventListener('animation-finished', function() {
+      thRd = true;
+      el1.removeAttribute('animation-mixer');
+      el1.setAttribute('visible', false);
+      el2.setAttribute('visible', true);
+      el2.setAttribute('animation-mixer', {clip: "*", loop: "repeat", repetitions: "infinity", timeScale: "0.8"});
+    })
+    el3.addEventListener('animation-finished', function() {
+      el3.removeAttribute('animation-mixer');
+      el3.setAttribute('visible', false);
+      el2.setAttribute('visible', true);
+      el2.setAttribute('animation-mixer', {clip: "*", timeScale: "0.8"});
+    })
+    
     function stAni() {
-      el.setAttribute('visible', true);
-      el.setAttribute('animation-mixer', {clip: "*", loop: "repeat", repetitions: "Infinity"});
+      marker.addEventListener('markerFound', function() {
+        el2.setAttribute('visible', false);
+        el1.setAttribute('visible', true);
+        el3.setAttribute('visible', false);
+        el1.setAttribute('animation-mixer', {clip: "*", loop: "once", repetitions: "infinity", timeScale: "0.5"});
+      })
     }
     
+    function stAct() {
+      if ( thRd == true ) {
+        el1.removeAttribute('animation-mixer');
+        el3.removeAttribute('animation-mixer');
+        el1.setAttribute('visible', false);
+        el2.setAttribute('visible', false);
+        el3.setAttribute('visible', true);
+        el3.setAttribute('animation-mixer', {clip: "*", loop: "once", timeScale: "0.6",});
+      }
+    }
+
     function glassStart() {
       // alert('Hello');
       if( sts == false ){
@@ -95,11 +142,11 @@
         document.querySelector('.imgb').classList.add('hidden');
         document.querySelector('.imgc').classList.add('hidden');
         document.querySelector('.wtr').classList.remove('wtrBlue');
-        el.setAttribute('visible', false);
+        el1.setAttribute('visible', false);
         for( var i = 0; i < bubble.length; i++ ) {
           document.getElementById( 'bubble'+i ).style.display = 'none';
         }
-        // el.removeEventListener('animation-finished', stAni);
+        // el1.removeEventListener('animation-finished', stAni);
       }
     }
 

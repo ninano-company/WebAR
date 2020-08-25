@@ -1,0 +1,67 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.topFixed {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 40px;
+    width: 100%;
+    font-size: 30px;
+    padding: 5px 10px;
+    background-color: #555;
+    color: #fff;
+}
+.topFixed .right {
+    float: right;
+    padding-right: 15px;
+}
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0;
+    margin-top: 50px;
+    padding: 0;
+    background-color: #555;
+    color: #fff;
+}
+.gridInnerContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 5px;
+    margin-bottom: 30px;
+}
+.header {
+    display: grid;
+    grid-template-columns: 60px 4fr 1fr;
+}
+.header .nickName {
+    align-self: center;
+    padding-left: 10px;
+}
+.header .right {
+    justify-self: right;
+    align-self: center;
+    padding-right: 10px;
+    font-size: 40px;
+}
+.profileImg {
+    width: 100%;
+    border-radius: 30px;
+}
+.mainImg {
+    width: 100%;
+}
+.bodyTop, .content {
+    padding: 5px 10px;
+    align-self: center;
+}
+.bodyTop {
+    font-size: 25px;
+}
+.content {
+    font-size: 18px;
+}

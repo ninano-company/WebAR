@@ -10,12 +10,12 @@
   <body>
     <a-scene background="color: #ECECEC">
       <a-assets>
-        <a-asset-item id="bird" response-type="arraybuffer" src="./scene.glb"></a-asset-item>
-        <a-asset-item id="fox" response-type="arraybuffer" src="./Fox.glb"></a-asset-item>
+        <!-- <a-asset-item id="bird" response-type="arraybuffer" src="./scene.glb"></a-asset-item>
+        <a-asset-item id="fox" response-type="arraybuffer" src="./Fox.glb"></a-asset-item> -->
         <a-asset-item id="nemo" response-type="arraybuffer" src="./nemo.glb"></a-asset-item>
       </a-assets>
       <!-- <a-entity gltf-model="#fox" position="2 0 -3" scale="0.01 0.01 0.01" animation-mixer></a-entity> -->
-      <a-entity gltf-model="#nemo" position="0 0 0" scale="0.005 0.005 0.005" animation-mixer></a-entity>
+      <a-entity gltf-model="#nemo" position="0 0 0" scale="0.005 0.005 0.005" nemo-scene></a-entity>
       <!-- <a-entity gltf-model="#bird" position="0 0 -3" scale="0.005 0.005 0.005" animation-mixer="clip:Take 001; timeScale: 1; crossFadeDuration: 1"></a-entity> -->
     </a-scene>
   </body>

@@ -41,6 +41,19 @@
     box-shadow: 0 0 4px 1px #999;
     z-index: 16;
 }
+.dirBtn2 {
+    position: absolute;
+    top: 5px;
+    left: 60px;
+    border: none;
+    outline: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 4px 1px #999;
+    z-index: 16;
+}
 .blcok {
     position: absolute;
     width: 100%;
@@ -49,20 +62,22 @@
     left: 0;
 }
 .layer {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     position: absolute;
-    opacity: 0;
     height: 100%;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 14;
-    transition: 1s;
+    transition: 0.5s;
 }
 .drc {
     flex-direction: row;
+}
+.layA {
+    display: flex;
 }
 .layOn {
     background-color: #fff;
